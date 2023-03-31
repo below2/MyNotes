@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting()
+                    PopulateNotes()
                 }
             }
         }
@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting() {
+fun PopulateNotes() {
     val testNotes = (0..20).map { i ->
         Note("Project $i", "Front: $i", "Back: $i")
     }
@@ -46,6 +46,6 @@ fun Greeting() {
 @Composable
 fun DefaultPreview() {
     MyNotesTheme {
-        Greeting()
+        PopulateNotes()
     }
 }
