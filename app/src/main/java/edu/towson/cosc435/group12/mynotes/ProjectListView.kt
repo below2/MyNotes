@@ -11,7 +11,7 @@ fun ProjectListView(
 ) {
     LazyColumn {
         items(projects.size) { index ->
-            ProjectRow(projects[index]) { navController.navigate(Routes.NotesFront.route) }
+            ProjectRow(projects[index]) { navController.navigate(Routes.NotesFront.createRoute(projects[index].projectId)) }
         }
     }
 }

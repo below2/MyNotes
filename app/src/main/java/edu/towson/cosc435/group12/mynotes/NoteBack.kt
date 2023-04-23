@@ -36,5 +36,5 @@ fun getNote(noteId: String, notes: List<Note>): Note {
             return note
         }
     }
-    return Note("", "", "")
+    return Note("", "", "", "")
 }

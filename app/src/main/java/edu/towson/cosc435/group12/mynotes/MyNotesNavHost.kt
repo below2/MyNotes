@@ -15,10 +15,10 @@ fun MyNotesNavHost(
     navController: NavHostController,
     startDestination: String = Routes.Projects.route
 ) {
-    val notevm: NoteListViewModel = viewModel()
-    val notes by notevm.notes
     val projectvm: ProjectListViewModel = viewModel()
     val projects by projectvm.projects
+    val notevm: NoteListViewModel = viewModel()
+    val notes by notevm.notes
     NavHost(
         navController = navController,
         startDestination = startDestination
@@ -26,8 +26,10 @@ fun MyNotesNavHost(
         composable(Routes.Projects.route) {
             ProjectListView(navController, projects)
         }
-        composable(Routes.NotesFront.route) {
-            NoteListView(navController, notes)
+        composable(Routes.NotesFront.route) { backStackEntry ->
+            val projectId = backStackEntry.arguments?.getString("projectId")
+            requireNotNull(projectId) { "projectId parameter was not found" }
+            NoteListView(navController, projectId, notes)
         }
         composable(Routes.NoteBack.route) { backStackEntry ->
             val noteId = backStackEntry.arguments?.getString("noteId")
