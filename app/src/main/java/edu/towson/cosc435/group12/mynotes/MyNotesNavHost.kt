@@ -13,7 +13,7 @@ import androidx.navigation.navArgument
 @Composable
 fun MyNotesNavHost(
     navController: NavHostController,
-    startDestination: String = "projects"
+    startDestination: String = Routes.Projects.route
 ) {
     val notevm: NoteListViewModel = viewModel()
     val notes by notevm.notes

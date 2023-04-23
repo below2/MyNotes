@@ -31,9 +31,9 @@ fun NoteBack(
 }
 
 fun getNote(noteId: String, notes: List<Note>): Note {
-    for(i in notes) {
-        if(noteId == i.noteId) {
-            return i
+    for(note in notes) {
+        if(noteId == note.noteId) {
+            return note
         }
     }
     return Note("", "", "")
