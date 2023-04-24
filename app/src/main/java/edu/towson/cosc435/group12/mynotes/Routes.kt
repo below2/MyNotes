@@ -8,4 +8,5 @@ sealed class Routes(var route: String) {
         fun createRoute(noteId: String) = "$noteId/noteback"
     }
     object Projects : Routes("projects")
+    object AddNote : Routes("addnote")
 }

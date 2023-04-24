@@ -29,4 +29,8 @@ class NoteRepository : INoteRepository {
     override fun getNotes(): List<Note> {
         return _notes
     }
+
+    override fun addNote(projectId : String, front : String, back : String) {
+        _notes += Note(UUID.randomUUID().toString(), projectId, front, back)
+    }
 }

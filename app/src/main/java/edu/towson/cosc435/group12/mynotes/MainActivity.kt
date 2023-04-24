@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -33,8 +34,8 @@ class MainActivity : ComponentActivity() {
                         topBar = {
                             TopBar(navController)
                         },
-                        bottomBar = {
-
+                        floatingActionButton = {
+                            AddButton(navController)
                         }
                     ) {
                         MyNotesNavHost(navController)
@@ -53,9 +54,20 @@ private fun TopBar(navController: NavHostController) {
         contentColor = Color.White,
         elevation = 10.dp,
         navigationIcon = {
+            //TODO: have the IconButton only display when not on startDestination
             IconButton(onClick = { navController.popBackStack() }) {
                 Icon(Icons.Default.ArrowBack, contentDescription = "Back")
             }
         }
     )
+}
+
+@Composable
+private fun AddButton(navController: NavHostController) {
+    FloatingActionButton(
+        onClick = { navController.navigate(Routes.AddNote.route) },
+        backgroundColor = Color.Green
+    ) {
+        Icon(Icons.Filled.Add, contentDescription = "Add")
+    }
 }

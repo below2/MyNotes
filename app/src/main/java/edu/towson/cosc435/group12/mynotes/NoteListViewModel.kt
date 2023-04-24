@@ -7,11 +7,16 @@ import androidx.lifecycle.ViewModel
 
 class NoteListViewModel : ViewModel() {
     private val _notes: MutableState<List<Note>> = mutableStateOf(listOf())
-    val notes: State<List<Note>> = _notes
+    var notes: State<List<Note>> = _notes
 
     private val _repository: INoteRepository = NoteRepository()
 
     init {
+        _notes.value = _repository.getNotes()
+    }
+
+    fun addNote(projectId: String, front: String, back: String) {
+        _repository.addNote(projectId, front, back)
         _notes.value = _repository.getNotes()
     }
 }

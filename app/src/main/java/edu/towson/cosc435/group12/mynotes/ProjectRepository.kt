@@ -19,4 +19,9 @@ class ProjectRepository : IProjectRepository {
     override fun getProjects(): List<Project> {
         return _projects
     }
+
+    override fun addProject(projectName: String) {
+//        _projects += Project(UUID.randomUUID().toString(), projectName)
+        _projects += Project((_projects.lastIndex + 1).toString(), projectName)
+    }
 }

@@ -31,6 +31,7 @@ fun NoteBack(
 }
 
 fun getNote(noteId: String, notes: List<Note>): Note {
+    //TODO: pretty sure you can do something with notes.filter but I don't feel like figuring it out right now
     for(note in notes) {
         if(noteId == note.noteId) {
             return note
