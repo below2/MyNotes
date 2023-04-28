@@ -4,7 +4,6 @@ data class Note(
     val noteId: String,
     val projectId: String,
     val front: String,
-    val back: String,
-    var isSelected: Boolean
+    val back: String
     ) {
 }

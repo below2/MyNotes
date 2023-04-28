@@ -23,19 +23,13 @@ class NoteListViewModel : ViewModel() {
         return _repository.getNote(noteId)
     }
 
-    fun addNote(projectId: String, front: String, back: String, isSelected: Boolean) {
-        _repository.addNote(projectId, front, back, isSelected)
+    fun addNote(projectId: String, front: String, back: String) {
+        _repository.addNote(projectId, front, back)
         _notes.value = _repository.getNotes()
     }
 
-    fun readyDelete(selectedNote: Note) {
-        _repository.readyDelete(selectedNote)
+    fun removeNote(note: Note) {
+        _repository.removeNote(note)
         _notes.value = _repository.getNotes()
-    }
-
-    fun selectNote(selectedNote: Note): Boolean {
-        _repository.selectNote(selectedNote)
-        _notes.value = _repository.getNotes()
-        return selectedNote.isSelected
     }
 }

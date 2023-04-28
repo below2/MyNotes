@@ -18,43 +18,21 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun NoteRow(
     note: Note,
-    notevm: NoteListViewModel,
     onClick: () -> Unit = {}
 ) {
-//    val noteListState = remember { notevm.notes.value.toMutableStateList() }
-    var showCheckbox by remember { mutableStateOf(notevm.getNotes()) }
-    var isSelected by remember { mutableStateOf(notevm.getNote(note.noteId).isSelected) }
-
     Box(
         modifier = Modifier
             .padding(16.dp)
     ) {
         Card(
+            onClick = onClick,
             shape = RoundedCornerShape(5.dp),
             elevation = 16.dp,
             modifier = Modifier
                 .padding(start = 16.dp, end = 16.dp, top = 5.dp, bottom = 5.dp)
                 .fillMaxWidth()
-                .combinedClickable(
-                    onClick = onClick,
-                    onLongClick = {
-                        notevm.readyDelete(note)
-//                        noteListState.find { it.noteId == note.noteId }?.isSelected = true
-//                        showCheckbox = !showCheckbox
-                    }
-                )
         ) {
             Text(note.front)
-        }
-        if (showCheckbox.any { it.isSelected }) {
-            Checkbox(
-                modifier = Modifier.align(Alignment.TopEnd),
-                checked = isSelected,
-                onCheckedChange = {
-                    notevm.selectNote(note)
-                    isSelected = !isSelected
-                }
-            )
         }
     }
 
