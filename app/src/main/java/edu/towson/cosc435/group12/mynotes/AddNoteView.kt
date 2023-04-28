@@ -88,7 +88,7 @@ fun AddNoteView(
 
             Button(
                 onClick = {
-                    notevm.addNote(selectedProject.projectId, frontText, backText)
+                    notevm.addNote(selectedProject.projectId, frontText, backText, false)
                     navController.navigateUp()
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = Color.Green),

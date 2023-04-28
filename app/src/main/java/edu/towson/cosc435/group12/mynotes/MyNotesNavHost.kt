@@ -26,7 +26,7 @@ fun MyNotesNavHost(
         composable(Routes.NotesFront.route) { backStackEntry ->
             val projectId = backStackEntry.arguments?.getString("projectId")
             requireNotNull(projectId) { "projectId parameter was not found" }
-            NoteListView(navController, projectId, notes)
+            NoteListView(navController, projectId, notevm)
         }
         composable(Routes.NoteBack.route) { backStackEntry ->
             val noteId = backStackEntry.arguments?.getString("noteId")
