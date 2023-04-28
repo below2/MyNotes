@@ -14,4 +14,9 @@ class ProjectListViewModel : ViewModel() {
     init {
         _projects.value = _repository.getProjects()
     }
+
+    fun addProject(projectName: String) {
+        _repository.addProject(projectName)
+        _projects.value = _repository.getProjects()
+    }
 }

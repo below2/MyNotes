@@ -65,7 +65,12 @@ private fun TopBar(navController: NavHostController) {
 @Composable
 private fun AddButton(navController: NavHostController) {
     FloatingActionButton(
-        onClick = { navController.navigate(Routes.AddNote.route) },
+        onClick = {
+            when (navController.currentDestination?.route) {
+                Routes.NotesFront.route -> navController.navigate(Routes.AddNote.route)
+                Routes.Projects.route -> navController.navigate(Routes.AddProject.route)
+            }
+        },
         backgroundColor = Color.Green
     ) {
         Icon(Icons.Filled.Add, contentDescription = "Add")

@@ -9,4 +9,5 @@ sealed class Routes(var route: String) {
     }
     object Projects : Routes("projects")
     object AddNote : Routes("addnote")
+    object AddProject : Routes("addproject")
 }

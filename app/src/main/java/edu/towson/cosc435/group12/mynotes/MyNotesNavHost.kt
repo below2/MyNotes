@@ -36,5 +36,8 @@ fun MyNotesNavHost(
         composable(Routes.AddNote.route) {
             AddNoteView(navController, notevm, projects)
         }
+        composable(Routes.AddProject.route) {
+            AddProjectView(navController, projectvm)
+        }
     }
 }
