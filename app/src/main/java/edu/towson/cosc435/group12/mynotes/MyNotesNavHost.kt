@@ -21,7 +21,7 @@ fun MyNotesNavHost(
         startDestination = startDestination
     ) {
         composable(Routes.Projects.route) {
-            ProjectListView(navController, projects)
+            ProjectListView(navController, projectvm, notevm)
         }
         composable(Routes.NotesFront.route) { backStackEntry ->
             val projectId = backStackEntry.arguments?.getString("projectId")

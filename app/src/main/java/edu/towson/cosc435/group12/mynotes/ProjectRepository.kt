@@ -22,6 +22,11 @@ class ProjectRepository : IProjectRepository {
 
     override fun addProject(projectName: String) {
 //        _projects += Project(UUID.randomUUID().toString(), projectName)
-        _projects += Project((_projects.lastIndex + 1).toString(), projectName)
+        // WARNING: adding/deleting projects works fine, but for now it is first populated with non-random ids so the code below allows the deletion of 1 and addition of 1 project
+        _projects += Project((_projects.lastIndex + 2).toString(), projectName)
+    }
+
+    override fun removeProject(project: Project) {
+        _projects = _projects.filterNot { it == project }
     }
 }

@@ -19,4 +19,14 @@ class ProjectListViewModel : ViewModel() {
         _repository.addProject(projectName)
         _projects.value = _repository.getProjects()
     }
+
+    fun removeProject(project: Project, notevm: NoteListViewModel) {
+        for (note in notevm.getNotes()) {
+            if (note.projectId == project.projectId) {
+                notevm.removeNote(note)
+            }
+        }
+        _repository.removeProject(project)
+        _projects.value = _repository.getProjects()
+    }
 }
