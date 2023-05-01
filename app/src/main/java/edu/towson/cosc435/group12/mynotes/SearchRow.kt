@@ -1,25 +1,21 @@
 package edu.towson.cosc435.group12.mynotes
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun NoteRow(
+fun SearchRow(
     navController: NavController,
+    projectvm: ProjectListViewModel,
     note: Note
 ) {
     Box(
@@ -42,6 +38,14 @@ fun NoteRow(
                         .weight(1.0f)
                         .padding(16.dp)
                 ) {
+                    Text(projectvm.getProject(note.projectId).projectName)
+                    Divider(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .width(1.dp)
+                            .padding(top = 8.dp, bottom = 8.dp),
+                        color = Color.Gray
+                    )
                     Text(note.front)
                     Divider(
                         modifier = Modifier
@@ -68,4 +72,3 @@ fun NoteRow(
         }
     }
 }
-

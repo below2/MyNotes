@@ -33,61 +33,66 @@ fun ProjectRow(
 ) {
     var expandedMenu by remember { mutableStateOf(false) }
 
-    Card(
-        shape = RoundedCornerShape(5.dp),
-        elevation = 16.dp,
+    Box(
         modifier = Modifier
-            .padding(start = 16.dp, end = 16.dp, top = 10.dp, bottom = 10.dp)
-            .fillMaxWidth()
-            .height(50.dp)
-            .clickable(onClick = onClick)
-            .combinedClickable(
-                onClick = onClick,
-                onLongClick = onLongClick
-            )
+            .padding(16.dp)
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+        Card(
+            shape = RoundedCornerShape(5.dp),
+            elevation = 16.dp,
+            modifier = Modifier
+                .padding(start = 16.dp, end = 16.dp, top = 5.dp, bottom = 5.dp)
+                .fillMaxWidth()
+                .height(50.dp)
+                .clickable(onClick = onClick)
+                .combinedClickable(
+                    onClick = onClick,
+                    onLongClick = onLongClick
+                )
         ) {
-            Text(
-                text = project.projectName,
-                modifier = Modifier.padding(start = 16.dp)
-            )
-            Box {
-                IconButton(
-                    onClick = { expandedMenu = true },
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.MoreVert,
-                        contentDescription = "More",
-                        tint = Color.Gray
-                    )
-                }
-                DropdownMenu(
-                    expanded = expandedMenu,
-                    onDismissRequest = { expandedMenu = false }
-                ) {
-                    DropdownMenuItem(
-                        onClick = {
-                            expandedMenu = false
-                            navController.navigate(Routes.EditProject.createRoute(project.projectId))
-                        }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = project.projectName,
+                    modifier = Modifier.padding(start = 16.dp)
+                )
+                Box {
+                    IconButton(
+                        onClick = { expandedMenu = true },
                     ) {
-                        Text("Edit")
-                    }
-                    Divider()
-                    DropdownMenuItem(
-                        onClick = {
-                            expandedMenu = false
-                            projectvm.removeProject(project, notevm)
-                        }
-                    ) {
-                        Text(
-                            text = "Delete",
-                            color = MaterialTheme.colors.primaryVariant
+                        Icon(
+                            imageVector = Icons.Default.MoreVert,
+                            contentDescription = "More",
+                            tint = Color.Gray
                         )
+                    }
+                    DropdownMenu(
+                        expanded = expandedMenu,
+                        onDismissRequest = { expandedMenu = false }
+                    ) {
+                        DropdownMenuItem(
+                            onClick = {
+                                expandedMenu = false
+                                navController.navigate(Routes.EditProject.createRoute(project.projectId))
+                            }
+                        ) {
+                            Text("Edit")
+                        }
+                        Divider()
+                        DropdownMenuItem(
+                            onClick = {
+                                expandedMenu = false
+                                projectvm.removeProject(project, notevm)
+                            }
+                        ) {
+                            Text(
+                                text = "Delete",
+                                color = MaterialTheme.colors.primaryVariant
+                            )
+                        }
                     }
                 }
             }

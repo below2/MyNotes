@@ -8,10 +8,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -88,6 +85,12 @@ private fun TopBar(navController: NavHostController) {
                     }
                 }
                 Text("MyNotes")
+                Spacer(modifier = Modifier.weight(1f))
+                IconButton(onClick = {
+                    navController.navigate(Routes.Search.route)
+                }) {
+                    Icon(Icons.Default.Search, contentDescription = "Search")
+                }
             }
         },
         backgroundColor = MaterialTheme.colors.primary,
@@ -149,7 +152,7 @@ private fun AddButton(navController: NavHostController) {
                 ) {
                     Icon(
                         painter = painterResource(id = R.drawable.round_notes_24),
-                        contentDescription = "Bookmark"
+                        contentDescription = "Add project"
                     )
                 }
             }

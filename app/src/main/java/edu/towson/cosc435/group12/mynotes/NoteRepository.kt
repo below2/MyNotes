@@ -66,12 +66,4 @@ class NoteRepository : INoteRepository {
             }
         }
     }
-
-    override fun setStudied(noteId: String, isStudied: Boolean) {
-        for (note in _notes) {
-            if (note.noteId == noteId) {
-                note.isStudied = isStudied
-            }
-        }
-    }
 }

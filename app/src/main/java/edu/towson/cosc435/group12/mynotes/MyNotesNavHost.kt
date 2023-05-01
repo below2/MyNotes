@@ -54,5 +54,8 @@ fun MyNotesNavHost(
             requireNotNull(projectId) { "projectId parameter was not found" }
             EditProjectNameView(navController, projectvm, projectId)
         }
+        composable(Routes.Search.route) {
+            SearchListView(navController, projectvm, notevm)
+        }
     }
 }

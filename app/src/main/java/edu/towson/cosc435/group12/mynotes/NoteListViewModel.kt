@@ -41,9 +41,4 @@ class NoteListViewModel : ViewModel() {
         _repository.editNote(noteId, front, back)
         _notes.value = _repository.getNotes()
     }
-
-    fun setStudied(noteId: String, isStudied: Boolean) {
-        _repository.setStudied(noteId, isStudied)
-        _notes.value = _repository.getNotes()
-    }
 }

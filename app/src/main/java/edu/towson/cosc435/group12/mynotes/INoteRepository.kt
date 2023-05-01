@@ -7,5 +7,4 @@ interface INoteRepository {
     fun addNote(projectId : String, front : String, back : String)
     fun removeNote(note: Note)
     fun editNote(noteId: String, front: String, back: String)
-    fun setStudied(noteId: String, isStudied: Boolean)
 }
