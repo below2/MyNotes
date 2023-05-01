@@ -39,4 +39,12 @@ class ProjectRepository : IProjectRepository {
     override fun removeProject(project: Project) {
         _projects = _projects.filterNot { it == project }
     }
+
+    override fun editProject(projectId: String, projectName: String) {
+        for (project in _projects) {
+            if (project.projectId == projectId) {
+                project.projectName = projectName
+            }
+        }
+    }
 }

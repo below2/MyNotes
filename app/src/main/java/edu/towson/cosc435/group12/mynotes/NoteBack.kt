@@ -1,41 +1,50 @@
 package edu.towson.cosc435.group12.mynotes
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.util.lerp
 import androidx.navigation.NavController
+import kotlin.math.absoluteValue
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun NoteBack(
     navController: NavController,
-    noteId: String,
-    notes: List<Note>
+    notevm: NoteListViewModel,
+    noteId: String
 ) {
-    Card(
-        shape = RoundedCornerShape(5.dp),
-        elevation = 16.dp,
-        modifier = Modifier
-            .padding(start=16.dp, end=16.dp, top=5.dp, bottom=5.dp)
-            .fillMaxWidth()
-    ) {
-        val note = getNote(noteId, notes)
-        Text(note.back)
-    }
-}
+    val note = notevm.getNote(noteId)
 
-fun getNote(noteId: String, notes: List<Note>): Note {
-    //TODO: pretty sure you can do something with notes.filter but I don't feel like figuring it out right now
-    for(note in notes) {
-        if(noteId == note.noteId) {
-            return note
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Card(
+            onClick = { navController.popBackStack() },
+            modifier = Modifier
+                .size(300.dp)
+                .aspectRatio(1.5f),
+            shape = RoundedCornerShape(5.dp),
+            elevation = 16.dp
+        ) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = note.back,
+                    textAlign = TextAlign.Center
+                )
+            }
         }
     }
-    return Note("", "", "", "")
 }

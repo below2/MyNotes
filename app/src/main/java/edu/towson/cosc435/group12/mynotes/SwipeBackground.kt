@@ -24,9 +24,9 @@ fun SwipeBackground(dismissState: DismissState) {
     val direction = dismissState.dismissDirection ?: return
     val color by animateColorAsState(
         when (dismissState.targetValue) {
-            DismissValue.Default -> Color.LightGray
+            DismissValue.Default -> MaterialTheme.colors.background
             DismissValue.DismissedToEnd -> Color.Green
-            DismissValue.DismissedToStart -> Color.Red
+            DismissValue.DismissedToStart -> MaterialTheme.colors.primaryVariant
         }
     )
     val alignment = when (direction) {

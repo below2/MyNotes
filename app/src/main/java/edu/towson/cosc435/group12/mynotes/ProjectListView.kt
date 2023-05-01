@@ -27,41 +27,17 @@ fun ProjectListView(
             items = projectListState.value,
             key = { project -> project.projectId },
             itemContent = { project ->
-                val currentProject by rememberUpdatedState(project)
-                val dismissState = rememberDismissState(
-                    confirmStateChange = {
-                        if (it == DismissValue.DismissedToStart) {
-                            projectvm.removeProject(currentProject, notevm)
-                            true
-                        } else false
-                    }
-                )
-
-                if (dismissState.isDismissed(DismissDirection.EndToStart)
-                ) {
-                    projectvm.removeProject(project, notevm)
-                }
-
-                SwipeToDismiss(
-                    state = dismissState,
-                    modifier = Modifier
-                        .padding(vertical = 1.dp)
-                        .animateItemPlacement(),
-                    directions = setOf(DismissDirection.EndToStart),
-                    background = {
-                        SwipeBackground(dismissState)
-                    },
-                    dismissContent = {
-                        ProjectRow(
-                            project = project,
-                            onClick = { navController.navigate(Routes.NotesFront.createRoute(project.projectId)) },
-                            onLongClick = {
-                                navController.navigate(
-                                    Routes.EditProject.createRoute(
-                                        project.projectId
-                                    )
-                                )
-                            }
+                ProjectRow(
+                    navController = navController,
+                    projectvm = projectvm,
+                    project = project,
+                    notevm = notevm,
+                    onClick = { navController.navigate(Routes.NotesFront.createRoute(project.projectId)) },
+                    onLongClick = {
+                        navController.navigate(
+                            Routes.EditProject.createRoute(
+                                project.projectId
+                            )
                         )
                     }
                 )

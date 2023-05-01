@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -25,27 +26,34 @@ fun EditNoteView(
     notevm: NoteListViewModel,
     noteId: String
 ) {
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+    val focusManager = LocalFocusManager.current
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .clickable(onClick = { focusManager.clearFocus() }),
+        contentAlignment = Alignment.Center) {
         Column(
             modifier = Modifier
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            var frontText by remember { mutableStateOf("") }
-            var backText by remember { mutableStateOf("") }
+            var frontText by remember { mutableStateOf(notevm.getNote(noteId).front) }
+            var backText by remember { mutableStateOf(notevm.getNote(noteId).back) }
 
             TextField(
                 value = frontText,
                 onValueChange = { frontText = it },
-                label = { Text("Front of note") },
+                label = { Text("Front of Note") },
+                modifier = Modifier
+                    .fillMaxWidth()
             )
 
             TextField(
                 value = backText,
                 onValueChange = { backText = it },
-                label = { Text("Back of note") },
+                label = { Text("Back of Note") },
+                modifier = Modifier.fillMaxWidth()
             )
 
             Button(
@@ -53,11 +61,14 @@ fun EditNoteView(
                     notevm.editNote(noteId, frontText, backText)
                     navController.navigateUp()
                 },
-                colors = ButtonDefaults.buttonColors(backgroundColor = Color.Green),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
+                contentPadding = PaddingValues(horizontal = 32.dp, vertical = 16.dp),
                 shape = RoundedCornerShape(8.dp)
             ) {
-                Text(text = "Done")
+                Text(
+                    text = "Done",
+                    style = MaterialTheme.typography.subtitle1
+                )
             }
         }
     }

@@ -16,4 +16,7 @@ sealed class Routes(var route: String) {
     object EditNote : Routes("{noteId}/editnote") {
         fun createRoute(noteId: String) = "$noteId/editnote"
     }
+    object EditProjectName : Routes("{projectId}/editprojectname") {
+        fun createRoute(projectId: String) = "$projectId/editprojectname"
+    }
 }

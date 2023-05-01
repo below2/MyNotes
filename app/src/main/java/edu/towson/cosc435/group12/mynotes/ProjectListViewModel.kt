@@ -15,9 +15,14 @@ class ProjectListViewModel : ViewModel() {
         _projects.value = _repository.getProjects()
     }
 
+    fun getProjects(): List<Project> {
+        return _repository.getProjects()
+    }
+
     fun getProject(projectId: String): Project {
         return _repository.getProject(projectId)
     }
+
     fun addProject(projectName: String) {
         _repository.addProject(projectName)
         _projects.value = _repository.getProjects()
@@ -30,6 +35,11 @@ class ProjectListViewModel : ViewModel() {
             }
         }
         _repository.removeProject(project)
+        _projects.value = _repository.getProjects()
+    }
+
+    fun editProject(projectId: String, projectName: String) {
+        _repository.editProject(projectId, projectName)
         _projects.value = _repository.getProjects()
     }
 }

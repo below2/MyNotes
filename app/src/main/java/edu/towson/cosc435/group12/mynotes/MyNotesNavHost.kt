@@ -26,15 +26,15 @@ fun MyNotesNavHost(
         composable(Routes.NotesFront.route) { backStackEntry ->
             val projectId = backStackEntry.arguments?.getString("projectId")
             requireNotNull(projectId) { "projectId parameter was not found" }
-            NoteListView(navController, projectId, notevm)
+            NoteCardListView(navController, projectId, notevm)
         }
         composable(Routes.NoteBack.route) { backStackEntry ->
             val noteId = backStackEntry.arguments?.getString("noteId")
             requireNotNull(noteId) { "noteId parameter was not found" }
-            NoteBack(navController, noteId, notes)
+            NoteBack(navController, notevm, noteId)
         }
         composable(Routes.AddNote.route) {
-            AddNoteView(navController, notevm, projects)
+            AddNoteView(navController, notevm, projectvm)
         }
         composable(Routes.AddProject.route) {
             AddProjectView(navController, projectvm)
@@ -48,6 +48,11 @@ fun MyNotesNavHost(
             val noteId = backStackEntry.arguments?.getString("noteId")
             requireNotNull(noteId) { "noteId parameter was not found" }
             EditNoteView(navController, notevm, noteId)
+        }
+        composable(Routes.EditProjectName.route) { backStackEntry ->
+            val projectId = backStackEntry.arguments?.getString("projectId")
+            requireNotNull(projectId) { "projectId parameter was not found" }
+            EditProjectNameView(navController, projectvm, projectId)
         }
     }
 }

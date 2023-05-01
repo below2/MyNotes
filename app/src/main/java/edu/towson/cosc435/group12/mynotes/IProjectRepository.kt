@@ -5,4 +5,5 @@ interface IProjectRepository {
     fun getProject(projectId: String): Project
     fun addProject(projectName : String)
     fun removeProject(project : Project)
+    fun editProject(projectId: String, projectName: String)
 }

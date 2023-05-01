@@ -1,6 +1,7 @@
 package edu.towson.cosc435.group12.mynotes
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,15 +20,13 @@ import androidx.navigation.NavController
 @Composable
 fun NoteRow(
     navController: NavController,
-    note: Note,
-    onClick: () -> Unit = {}
+    note: Note
 ) {
     Box(
         modifier = Modifier
             .padding(16.dp)
     ) {
         Card(
-            onClick = onClick,
             shape = RoundedCornerShape(5.dp),
             elevation = 16.dp,
             modifier = Modifier
@@ -47,7 +46,8 @@ fun NoteRow(
                     Divider(
                         modifier = Modifier
                             .fillMaxSize()
-                            .width(1.dp),
+                            .width(1.dp)
+                            .padding(top = 8.dp, bottom = 8.dp),
                         color = Color.Gray
                     )
                     Text(note.back)

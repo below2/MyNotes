@@ -16,15 +16,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
-fun AddProjectView(
+fun EditProjectNameView(
     navController: NavHostController,
-    projectvm: ProjectListViewModel
+    projectvm: ProjectListViewModel,
+    projectId: String
 ) {
     val focusManager = LocalFocusManager.current
     Box(modifier = Modifier
@@ -38,7 +38,7 @@ fun AddProjectView(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            var projectName by remember { mutableStateOf("") }
+            var projectName by remember { mutableStateOf(projectvm.getProject(projectId).projectName) }
             val keyboardController = LocalSoftwareKeyboardController.current
 
             TextField(
@@ -53,7 +53,7 @@ fun AddProjectView(
 
             Button(
                 onClick = {
-                    projectvm.addProject(projectName)
+                    projectvm.editProject(projectId, projectName)
                     navController.navigateUp()
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),
@@ -61,7 +61,7 @@ fun AddProjectView(
                 shape = RoundedCornerShape(8.dp)
             ) {
                 Text(
-                    text = "Create",
+                    text = "Done",
                     style = MaterialTheme.typography.subtitle1
                 )
             }
