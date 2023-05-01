@@ -15,6 +15,9 @@ class ProjectListViewModel : ViewModel() {
         _projects.value = _repository.getProjects()
     }
 
+    fun getProject(projectId: String): Project {
+        return _repository.getProject(projectId)
+    }
     fun addProject(projectName: String) {
         _repository.addProject(projectName)
         _projects.value = _repository.getProjects()

@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import edu.towson.cosc435.group12.mynotes.ui.theme.MyNotesTheme
+//import edu.towson.cosc435.group12.mynotes.ui.theme.MyNotesTheme
 
 class MainActivity : ComponentActivity() {
     //TODO: extract all of this to its own class and just have MainActivity call that class
@@ -64,15 +64,17 @@ private fun TopBar(navController: NavHostController) {
 
 @Composable
 private fun AddButton(navController: NavHostController) {
-    FloatingActionButton(
-        onClick = {
-            when (navController.currentDestination?.route) {
-                Routes.NotesFront.route -> navController.navigate(Routes.AddNote.route)
-                Routes.Projects.route -> navController.navigate(Routes.AddProject.route)
-            }
-        },
-        backgroundColor = Color.Green
-    ) {
-        Icon(Icons.Filled.Add, contentDescription = "Add")
-    }
+        FloatingActionButton(
+            onClick = {
+                when (navController.currentDestination?.route) {
+                    Routes.EditProject.route -> navController.navigate(Routes.AddNote.route)
+                    Routes.NotesFront.route -> navController.navigate(Routes.AddNote.route)
+                    Routes.Projects.route -> navController.navigate(Routes.AddProject.route)
+                }
+            },
+            backgroundColor = MaterialTheme.colors.primary
+        ) {
+            Icon(Icons.Filled.Add, contentDescription = "Add")
+        }
 }
+

@@ -40,11 +40,38 @@ class NoteRepository : INoteRepository {
         return Note("", "", "", "")
     }
 
+    override fun getProjectNotes(projectId: String): List<Note> {
+        var projectNotes = listOf<Note>()
+        for (note in _notes) {
+            if (note.projectId == projectId) {
+                projectNotes += note
+            }
+        }
+        return projectNotes
+    }
+
     override fun addNote(projectId : String, front : String, back : String) {
         _notes += Note(UUID.randomUUID().toString(), projectId, front, back)
     }
 
     override fun removeNote(note: Note) {
         _notes = _notes.filterNot { it == note}
+    }
+
+    override fun editNote(noteId: String, front: String, back: String) {
+        for (note in _notes) {
+            if (note.noteId == noteId) {
+                note.front = front
+                note.back = back
+            }
+        }
+    }
+
+    override fun setStudied(noteId: String, isStudied: Boolean) {
+        for (note in _notes) {
+            if (note.noteId == noteId) {
+                note.isStudied = isStudied
+            }
+        }
     }
 }

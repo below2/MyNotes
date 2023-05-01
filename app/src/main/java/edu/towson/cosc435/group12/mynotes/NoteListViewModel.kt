@@ -23,6 +23,10 @@ class NoteListViewModel : ViewModel() {
         return _repository.getNote(noteId)
     }
 
+    fun getProjectNotes(projectId: String): List<Note> {
+        return _repository.getProjectNotes(projectId)
+    }
+
     fun addNote(projectId: String, front: String, back: String) {
         _repository.addNote(projectId, front, back)
         _notes.value = _repository.getNotes()
@@ -30,6 +34,16 @@ class NoteListViewModel : ViewModel() {
 
     fun removeNote(note: Note) {
         _repository.removeNote(note)
+        _notes.value = _repository.getNotes()
+    }
+
+    fun editNote(noteId: String, front: String, back: String) {
+        _repository.editNote(noteId, front, back)
+        _notes.value = _repository.getNotes()
+    }
+
+    fun setStudied(noteId: String, isStudied: Boolean) {
+        _repository.setStudied(noteId, isStudied)
         _notes.value = _repository.getNotes()
     }
 }

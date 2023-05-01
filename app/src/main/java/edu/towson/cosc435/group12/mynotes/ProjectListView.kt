@@ -9,7 +9,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
@@ -49,28 +52,20 @@ fun ProjectListView(
                         SwipeBackground(dismissState)
                     },
                     dismissContent = {
-                        ProjectRow(project) {
-                            navController.navigate(
-                                Routes.NotesFront.createRoute(
-                                    project.projectId
+                        ProjectRow(
+                            project = project,
+                            onClick = { navController.navigate(Routes.NotesFront.createRoute(project.projectId)) },
+                            onLongClick = {
+                                navController.navigate(
+                                    Routes.EditProject.createRoute(
+                                        project.projectId
+                                    )
                                 )
-                            )
-                        }
+                            }
+                        )
                     }
                 )
             }
         )
     }
 }
-
-//@Composable
-//fun ProjectListView(
-//    navController: NavController,
-//    projects: List<Project>
-//) {
-//    LazyColumn {
-//        items(projects) { project ->
-//            ProjectRow(project) { navController.navigate(Routes.NotesFront.createRoute(project.projectId)) }
-//        }
-//    }
-//}

@@ -20,6 +20,16 @@ class ProjectRepository : IProjectRepository {
         return _projects
     }
 
+    override fun getProject(projectId: String): Project {
+        for (project in _projects) {
+            if (project.projectId == projectId) {
+                return project
+            }
+        }
+
+        return Project("", "")
+    }
+
     override fun addProject(projectName: String) {
 //        _projects += Project(UUID.randomUUID().toString(), projectName)
         // WARNING: adding/deleting projects works fine, but for now it is first populated with non-random ids so the code below allows the deletion of 1 and addition of 1 project

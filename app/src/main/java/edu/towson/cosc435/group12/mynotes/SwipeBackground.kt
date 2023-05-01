@@ -25,9 +25,9 @@ fun SwipeBackground(dismissState: DismissState) {
     val color by animateColorAsState(
         when (dismissState.targetValue) {
             DismissValue.Default -> Color.LightGray
+            DismissValue.DismissedToEnd -> Color.Green
             DismissValue.DismissedToStart -> Color.Red
-            else -> {}
-        } as Color
+        }
     )
     val alignment = when (direction) {
         DismissDirection.EndToStart -> Alignment.CenterEnd
