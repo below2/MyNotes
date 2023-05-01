@@ -136,9 +136,9 @@ private fun AddButton(navController: NavHostController) {
                     modifier = Modifier
                         .offset(y = (-72).dp)
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.baseline_note_24),
-                        contentDescription = "Add note"
+                    Text(
+                        text = "N",
+                        style = MaterialTheme.typography.subtitle1
                     )
                 }
                 FloatingActionButton(
@@ -150,9 +150,9 @@ private fun AddButton(navController: NavHostController) {
                     modifier = Modifier
                         .offset(x = (-72).dp)
                 ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.round_notes_24),
-                        contentDescription = "Add project"
+                    Text(
+                        text = "P",
+                        style = MaterialTheme.typography.subtitle1
                     )
                 }
             }

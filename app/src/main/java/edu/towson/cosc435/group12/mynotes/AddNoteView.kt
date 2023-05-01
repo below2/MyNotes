@@ -16,6 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 
@@ -76,19 +77,26 @@ fun AddNoteView(
 
                 var frontText by remember { mutableStateOf("") }
                 var backText by remember { mutableStateOf("") }
+                val keyboardController = LocalSoftwareKeyboardController.current
 
                 TextField(
                     value = frontText,
                     onValueChange = { frontText = it },
                     label = { Text("Front of Note") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(
+                        onDone = { keyboardController?.hide() })
                 )
 
                 TextField(
                     value = backText,
                     onValueChange = { backText = it },
                     label = { Text("Back of Note") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                    keyboardActions = KeyboardActions(
+                        onDone = { keyboardController?.hide() })
                 )
 
                 Button(
@@ -111,7 +119,8 @@ fun AddNoteView(
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Text(
                 text = "You must create a project before creating a note",
-                style = MaterialTheme.typography.h4
+                style = MaterialTheme.typography.h4,
+                textAlign = TextAlign.Center
             )
         }
     }

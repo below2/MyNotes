@@ -40,20 +40,27 @@ fun EditNoteView(
 
             var frontText by remember { mutableStateOf(notevm.getNote(noteId).front) }
             var backText by remember { mutableStateOf(notevm.getNote(noteId).back) }
+            val keyboardController = LocalSoftwareKeyboardController.current
 
             TextField(
                 value = frontText,
                 onValueChange = { frontText = it },
                 label = { Text("Front of Note") },
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(
+                    onDone = { keyboardController?.hide() })
             )
 
             TextField(
                 value = backText,
                 onValueChange = { backText = it },
                 label = { Text("Back of Note") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(
+                    onDone = { keyboardController?.hide() })
             )
 
             Button(
