@@ -1,6 +1,7 @@
 package edu.towson.cosc435.group12.mynotes
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
@@ -32,6 +33,7 @@ fun ProjectRow(
     onLongClick: () -> Unit = {}
 ) {
     var expandedMenu by remember { mutableStateOf(false) }
+    var showDialog by remember { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -69,6 +71,7 @@ fun ProjectRow(
                             tint = Color.Gray
                         )
                     }
+
                     DropdownMenu(
                         expanded = expandedMenu,
                         onDismissRequest = { expandedMenu = false }
@@ -85,7 +88,8 @@ fun ProjectRow(
                         DropdownMenuItem(
                             onClick = {
                                 expandedMenu = false
-                                projectvm.removeProject(project, notevm)
+                                showDialog = true
+//                                projectvm.removeProject(project, notevm)
                             }
                         ) {
                             Text(
@@ -93,6 +97,38 @@ fun ProjectRow(
                                 color = MaterialTheme.colors.primaryVariant
                             )
                         }
+                    }
+
+                    if (showDialog) {
+                        AlertDialog(
+                            onDismissRequest = { showDialog = false },
+                            title = {
+                                Text("Confirm Project Deletion")
+                            },
+                            text = {
+                                Text("Are you sure you want to delete the project: ${project.projectName}?")
+                            },
+                            confirmButton = {
+                                Button(
+                                    onClick = {
+                                        showDialog = false
+                                        projectvm.removeProject(project, notevm)
+                                    },
+                                    colors = ButtonDefaults.buttonColors(
+                                        backgroundColor = MaterialTheme.colors.primaryVariant
+                                    )
+                                ) {
+                                    Text(text = "Delete")
+                                }
+                            },
+                            dismissButton = {
+                                Button(
+                                    onClick = { showDialog = false },
+                                ) {
+                                    Text("Cancel")
+                                }
+                            }
+                        )
                     }
                 }
             }

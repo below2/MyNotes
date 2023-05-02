@@ -1,10 +1,20 @@
 package edu.towson.cosc435.group12.mynotes
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
@@ -13,19 +23,45 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 
 //import edu.towson.cosc435.group12.mynotes.ui.theme.MyNotesTheme
 
 class MainActivity : ComponentActivity() {
     //TODO: extract all of this to its own class and just have MainActivity call that class
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    @OptIn(ExperimentalPermissionsApi::class)
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+//            val notification = createNotification(this)
+//
+//            val notificationPermission = rememberPermissionState(
+//                permission = Manifest.permission.POST_NOTIFICATIONS
+//            )
+//
+//            if (notificationPermission.status.isGranted) {
+//                with(NotificationManagerCompat.from(this)) {
+//                    notify(1, notification)
+//                }
+//            } else {
+//                LaunchedEffect(key1 = true) {
+//                    notificationPermission.launchPermissionRequest()
+//                }
+//            }
+
             MyNotesTheme {
                 val navController = rememberNavController()
 
@@ -49,8 +85,26 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 private fun TopBar(navController: NavHostController) {
+//    val notification = createNotification(LocalContext.current)
+//
+//    val notificationPermission = rememberPermissionState(
+//        permission = Manifest.permission.POST_NOTIFICATIONS
+//    )
+//
+//    if (notificationPermission.status.isGranted) {
+//        with(NotificationManagerCompat.from(LocalContext.current)) {
+//            notify(1, notification)
+//        }
+//    } else {
+//        LaunchedEffect(key1 = true) {
+//            notificationPermission.launchPermissionRequest()
+//        }
+//    }
+
     val currentRoute = navController
         .currentBackStackEntryFlow
         .collectAsState(initial = navController.currentBackStackEntry)
@@ -99,6 +153,7 @@ private fun TopBar(navController: NavHostController) {
     )
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 private fun AddButton(navController: NavHostController) {
     val currentRoute = navController
@@ -125,7 +180,11 @@ private fun AddButton(navController: NavHostController) {
         ) {
             Icon(Icons.Default.Add, contentDescription = "Add")
         }
-        AnimatedVisibility(visible = showOptions) {
+        AnimatedVisibility(
+            visible = showOptions,
+            enter = scaleIn(),
+            exit = scaleOut()
+        ) {
             Box {
                 FloatingActionButton(
                     onClick = {
