@@ -40,28 +40,11 @@ import com.google.accompanist.permissions.rememberPermissionState
 
 class MainActivity : ComponentActivity() {
     //TODO: extract all of this to its own class and just have MainActivity call that class
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @OptIn(ExperimentalPermissionsApi::class)
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-//            val notification = createNotification(this)
-//
-//            val notificationPermission = rememberPermissionState(
-//                permission = Manifest.permission.POST_NOTIFICATIONS
-//            )
-//
-//            if (notificationPermission.status.isGranted) {
-//                with(NotificationManagerCompat.from(this)) {
-//                    notify(1, notification)
-//                }
-//            } else {
-//                LaunchedEffect(key1 = true) {
-//                    notificationPermission.launchPermissionRequest()
-//                }
-//            }
-
             MyNotesTheme {
                 val navController = rememberNavController()
 
@@ -85,26 +68,8 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 private fun TopBar(navController: NavHostController) {
-//    val notification = createNotification(LocalContext.current)
-//
-//    val notificationPermission = rememberPermissionState(
-//        permission = Manifest.permission.POST_NOTIFICATIONS
-//    )
-//
-//    if (notificationPermission.status.isGranted) {
-//        with(NotificationManagerCompat.from(LocalContext.current)) {
-//            notify(1, notification)
-//        }
-//    } else {
-//        LaunchedEffect(key1 = true) {
-//            notificationPermission.launchPermissionRequest()
-//        }
-//    }
-
     val currentRoute = navController
         .currentBackStackEntryFlow
         .collectAsState(initial = navController.currentBackStackEntry)
