@@ -20,4 +20,6 @@ sealed class Routes(var route: String) {
         fun createRoute(projectId: String) = "$projectId/editprojectname"
     }
     object Search : Routes("search")
+
+    object suggestedSearch : Routes ("suggested")
 }

@@ -12,6 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyNotes"
         tools:targetApi="31">
+        <provider android:name=".suggestedSearch"
+            android:authorities="edu.towson.cosc435.group12.mynotes.suggestedSearch" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

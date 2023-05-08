@@ -2,10 +2,12 @@ package edu.towson.cosc435.group12.mynotes
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.SearchManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.provider.SearchRecentSuggestions
 import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -62,6 +64,13 @@ class MainActivity : ComponentActivity() {
                     ) {
                         MyNotesNavHost(navController)
                     }
+                }
+            }
+
+            if (Intent.ACTION_SEARCH == intent.action){
+                intent.getStringExtra(SearchManager.QUERY)?.also {
+                    query -> SearchRecentSuggestions(this, suggestedSearch.AUTHORITY, suggestedSearch.MODE)
+                    .saveRecentQuery(query, null)
                 }
             }
         }
