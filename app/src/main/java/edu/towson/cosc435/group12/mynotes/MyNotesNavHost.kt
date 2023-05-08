@@ -4,35 +4,58 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 
 @Composable
 fun MyNotesNavHost(
     navController: NavHostController,
-    startDestination: String = "projects"
+    startDestination: String = Routes.Projects.route
 ) {
-    val notevm: NoteListViewModel = viewModel()
-    val notes by notevm.notes
     val projectvm: ProjectListViewModel = viewModel()
     val projects by projectvm.projects
+    val notevm: NoteListViewModel = viewModel()
+    val notes by notevm.notes
     NavHost(
         navController = navController,
         startDestination = startDestination
     ) {
         composable(Routes.Projects.route) {
-            ProjectListView(navController, projects)
+            ProjectListView(navController, projectvm, notevm)
         }
-        composable(Routes.NotesFront.route) {
-            NoteListView(navController, notes)
+        composable(Routes.NotesFront.route) { backStackEntry ->
+            val projectId = backStackEntry.arguments?.getString("projectId")
+            requireNotNull(projectId) { "projectId parameter was not found" }
+            NoteCardListView(navController, projectId, notevm)
         }
         composable(Routes.NoteBack.route) { backStackEntry ->
             val noteId = backStackEntry.arguments?.getString("noteId")
             requireNotNull(noteId) { "noteId parameter was not found" }
-            NoteBack(navController, noteId, notes)
+            NoteBack(navController, notevm, noteId)
+        }
+        composable(Routes.AddNote.route) {
+            AddNoteView(navController, notevm, projectvm)
+        }
+        composable(Routes.AddProject.route) {
+            AddProjectView(navController, projectvm)
+        }
+        composable(Routes.EditProject.route) { backStackEntry ->
+            val projectId = backStackEntry.arguments?.getString("projectId")
+            requireNotNull(projectId) { "projectId parameter was not found" }
+            EditProjectView(navController, projectId, projectvm, notevm)
+        }
+        composable(Routes.EditNote.route) { backStackEntry ->
+            val noteId = backStackEntry.arguments?.getString("noteId")
+            requireNotNull(noteId) { "noteId parameter was not found" }
+            EditNoteView(navController, notevm, noteId)
+        }
+        composable(Routes.EditProjectName.route) { backStackEntry ->
+            val projectId = backStackEntry.arguments?.getString("projectId")
+            requireNotNull(projectId) { "projectId parameter was not found" }
+            EditProjectNameView(navController, projectvm, projectId)
+        }
+        composable(Routes.Search.route) {
+            SearchListView(navController, projectvm, notevm)
         }
     }
 }

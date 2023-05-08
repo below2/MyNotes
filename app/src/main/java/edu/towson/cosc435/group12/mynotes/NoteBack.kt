@@ -1,40 +1,65 @@
 package edu.towson.cosc435.group12.mynotes
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.util.lerp
 import androidx.navigation.NavController
+import kotlin.math.absoluteValue
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun NoteBack(
     navController: NavController,
-    noteId: String,
-    notes: List<Note>
+    notevm: NoteListViewModel,
+    noteId: String
 ) {
-    Card(
-        shape = RoundedCornerShape(5.dp),
-        elevation = 16.dp,
-        modifier = Modifier
-            .padding(start=16.dp, end=16.dp, top=5.dp, bottom=5.dp)
-            .fillMaxWidth()
-    ) {
-        val note = getNote(noteId, notes)
-        Text(note.back)
-    }
-}
+    val note = notevm.getNote(noteId)
 
-fun getNote(noteId: String, notes: List<Note>): Note {
-    for(i in notes) {
-        if(noteId == i.noteId) {
-            return i
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Card(
+                onClick = { navController.popBackStack() },
+                modifier = Modifier
+                    .size(300.dp)
+                    .aspectRatio(1.5f),
+                shape = RoundedCornerShape(5.dp),
+                elevation = 16.dp
+            ) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = note.back,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+            IconButton(
+                onClick = {
+                    navController.popBackStack()
+                },
+            ) {
+                Icon(
+                    painter = painterResource(id = R.drawable.baseline_flip_to_front_24),
+                    contentDescription =  "Flip to front",
+                    tint = Color.Gray
+                )
+            }
         }
     }
-    return Note("", "", "")
 }
