@@ -2,6 +2,21 @@ package edu.towson.cosc435.group12.mynotes
 
 import java.util.*
 
+
+//class NoteRepository(context: Context) : INoteRepository {
+//
+//    private val dbHelper = MyNotesDBHelper(context)
+//
+//    override fun getNotes(): List<Note> {
+//        val db = dbHelper.readableDatabase
+//
+//        val projection = arrayOf(
+//            NoteContract.NoteEntry.COLUMN_NAME_NOTE_ID,
+//            NoteContract.NoteEntry.COLUMN_NAME_PROJECT_ID,
+//            NoteContract
+// update to this so on so on
+
+
 class NoteRepository : INoteRepository {
     private var _notes = listOf<Note>()
 
