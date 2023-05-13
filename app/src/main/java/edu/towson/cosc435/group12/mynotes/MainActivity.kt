@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -67,6 +68,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 
 @Composable
 private fun TopBar(navController: NavHostController) {
@@ -183,4 +185,6 @@ private fun AddButton(navController: NavHostController) {
         }
     }
 }
+
+
 
