@@ -67,4 +67,28 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, dbName, null,
         }
         return empList
     }
+
+    fun updateNotes(note: NoteDB): Int {
+        val db = this.writableDatabase
+        val contentVal = ContentValues()
+        contentVal.put(noteID,note.noteID)
+        contentVal.put(key_Note,note.noteName)
+        contentVal.put(key_Project,note.projectName)
+        val success = db.update(dbTable, contentVal, "id=" + note.noteID,null)
+        db.close()
+        return success
+    }
+
+    fun deleteNotes(note: NoteDB): Int {
+        val db = this.writableDatabase
+        val contentVal = ContentValues()
+        contentVal.put(noteID,note.noteID)
+        contentVal.put(key_Note,note.noteName)
+        contentVal.put(key_Project,note.projectName)
+        val success = db.delete(dbTable,"id=" + note.noteID,null)
+        db.close()
+        return success
+    }
+
+
 }
