@@ -1,29 +1,22 @@
 package edu.towson.cosc435.group12.mynotes
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalInspectionMode
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProjectRow(
     navController: NavController,
@@ -74,7 +67,6 @@ fun ProjectRow(
                             tint = Color.Gray
                         )
                     }
-
                     DropdownMenu(
                         expanded = expandedMenu,
                         onDismissRequest = { expandedMenu = false }
@@ -92,7 +84,7 @@ fun ProjectRow(
                             onClick = {
                                 expandedMenu = false
                                 showDialog = true
-//                                projectvm.removeProject(project, notevm)
+
                             }
                         ) {
                             Text(
@@ -117,10 +109,16 @@ fun ProjectRow(
                                         showDialog = false
                                         val projectDao = projectDatabase.projectDao()
                                         val noteDao = noteDatabase.noteDao()
-                                        val notesToDelete = notevm.getProjectNotes(project.projectId)
+                                        val notesToDelete =
+                                            notevm.getProjectNotes(project.projectId)
 
                                         projectvm.removeProject(project, notevm)
-                                        projectvm.removeProjectDB(projectDao, noteDao, project, notesToDelete)
+                                        projectvm.removeProjectDB(
+                                            projectDao,
+                                            noteDao,
+                                            project,
+                                            notesToDelete
+                                        )
                                     },
                                     colors = ButtonDefaults.buttonColors(
                                         backgroundColor = MaterialTheme.colors.primaryVariant

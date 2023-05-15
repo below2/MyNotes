@@ -11,14 +11,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavHostController
@@ -27,7 +23,8 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import java.util.*
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class,
+@OptIn(
+    ExperimentalComposeUiApi::class,
     ExperimentalPermissionsApi::class
 )
 @Composable
@@ -42,8 +39,8 @@ fun AddProjectView(
 
     Box(
         modifier = Modifier
-        .fillMaxSize()
-        .clickable(onClick = { focusManager.clearFocus() }),
+            .fillMaxSize()
+            .clickable(onClick = { focusManager.clearFocus() }),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -97,7 +94,6 @@ fun AddProjectView(
         )
 
         if (notificationPermission.status.isGranted) {
-            //TODO: not sure why this is happening
             NotificationManagerCompat.from(LocalContext.current).notify(1, notification)
         } else {
             LaunchedEffect(key1 = true) {

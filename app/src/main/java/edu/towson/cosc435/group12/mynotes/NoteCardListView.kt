@@ -26,7 +26,7 @@ import androidx.compose.ui.util.lerp
 import kotlinx.coroutines.launch
 
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun NoteCardListView(
     navController: NavController,
@@ -40,7 +40,6 @@ fun NoteCardListView(
         NoteCard(navController, projectNotes[index], pagerState, index)
     }
 }
-
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable

@@ -1,4 +1,5 @@
 package edu.towson.cosc435.group12.mynotes
+
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 

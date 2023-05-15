@@ -10,9 +10,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -20,10 +17,6 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
@@ -97,7 +90,6 @@ fun AddNoteView(
                     keyboardActions = KeyboardActions(
                         onDone = { keyboardController?.hide() })
                 )
-
                 TextField(
                     value = backText,
                     onValueChange = { backText = it },
@@ -107,7 +99,6 @@ fun AddNoteView(
                     keyboardActions = KeyboardActions(
                         onDone = { keyboardController?.hide() })
                 )
-
                 Button(
                     onClick = {
                         val noteDao = noteDatabase.noteDao()

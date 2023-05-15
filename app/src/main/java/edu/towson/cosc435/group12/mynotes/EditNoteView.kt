@@ -17,7 +17,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun EditNoteView(
     navController: NavHostController,
@@ -26,10 +26,12 @@ fun EditNoteView(
 ) {
     val noteDatabase = NoteDatabase.getInstance(LocalContext.current)
     val focusManager = LocalFocusManager.current
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .clickable(onClick = { focusManager.clearFocus() }),
-        contentAlignment = Alignment.Center) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable(onClick = { focusManager.clearFocus() }),
+        contentAlignment = Alignment.Center
+    ) {
         Column(
             modifier = Modifier
                 .padding(16.dp),
@@ -51,7 +53,6 @@ fun EditNoteView(
                 keyboardActions = KeyboardActions(
                     onDone = { keyboardController?.hide() })
             )
-
             TextField(
                 value = backText,
                 onValueChange = { backText = it },
@@ -61,12 +62,17 @@ fun EditNoteView(
                 keyboardActions = KeyboardActions(
                     onDone = { keyboardController?.hide() })
             )
-
             Button(
                 onClick = {
                     notevm.editNote(noteId, frontText, backText)
                     val noteDao = noteDatabase.noteDao()
-                    notevm.editNoteDB(noteId, notevm.getNote(noteId).projectId, noteDao, frontText, backText)
+                    notevm.editNoteDB(
+                        noteId,
+                        notevm.getNote(noteId).projectId,
+                        noteDao,
+                        frontText,
+                        backText
+                    )
                     navController.navigateUp()
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),

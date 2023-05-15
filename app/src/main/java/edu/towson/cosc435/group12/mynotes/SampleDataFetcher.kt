@@ -1,5 +1,6 @@
 package edu.towson.cosc435.group12.mynotes
 
+import android.util.Log
 import com.google.gson.Gson
 import okhttp3.*
 import java.io.IOException
@@ -14,7 +15,7 @@ fun fetchSampleData(callback: (List<SampleProject>, List<SampleNote>) -> Unit) {
 
     client.newCall(request).enqueue(object : Callback {
         override fun onFailure(call: Call, e: IOException) {
-            // Handle request failure if needed
+            Log.d("SampleDataFetcher", "Fetch failed")
         }
 
         override fun onResponse(call: Call, response: Response) {
@@ -24,7 +25,6 @@ fun fetchSampleData(callback: (List<SampleProject>, List<SampleNote>) -> Unit) {
             val sampleProjects = sampleDataResponse.projects
             val sampleNotes = sampleDataResponse.notes
 
-            // Invoke the callback with the translated text
             callback(sampleProjects, sampleNotes)
         }
     })

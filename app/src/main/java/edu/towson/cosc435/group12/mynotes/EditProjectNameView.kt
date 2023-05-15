@@ -20,7 +20,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun EditProjectNameView(
     navController: NavHostController,
@@ -29,10 +29,12 @@ fun EditProjectNameView(
 ) {
     val projectDatabase = ProjectDatabase.getInstance(LocalContext.current)
     val focusManager = LocalFocusManager.current
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .clickable(onClick = { focusManager.clearFocus() }),
-        contentAlignment = Alignment.Center) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .clickable(onClick = { focusManager.clearFocus() }),
+        contentAlignment = Alignment.Center
+    ) {
         Column(
             modifier = Modifier
                 .padding(16.dp),
@@ -52,7 +54,6 @@ fun EditProjectNameView(
                 keyboardActions = KeyboardActions(
                     onDone = { keyboardController?.hide() })
             )
-
             Button(
                 onClick = {
                     val projectDao = projectDatabase.projectDao()

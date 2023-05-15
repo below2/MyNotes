@@ -56,7 +56,7 @@ fun NoteBack(
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.baseline_flip_to_front_24),
-                    contentDescription =  "Flip to front",
+                    contentDescription = "Flip to front",
                     tint = Color.Gray
                 )
             }

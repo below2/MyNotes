@@ -1,15 +1,9 @@
 package edu.towson.cosc435.group12.mynotes
 
-import android.content.Context
-import androidx.compose.ui.platform.LocalContext
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.util.*
-
 class ProjectRepository : IProjectRepository {
     private var _projects = listOf<Project>()
 
-    init { }
+    init {}
 
     override fun getProjects(): List<Project> {
         return _projects

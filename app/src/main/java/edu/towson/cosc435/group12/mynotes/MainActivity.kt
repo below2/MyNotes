@@ -21,19 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import kotlinx.coroutines.*
 import java.util.*
 
-//import edu.towson.cosc435.group12.mynotes.ui.theme.MyNotesTheme
-
 class MainActivity : ComponentActivity() {
-    //TODO: extract all of this to its own class and just have MainActivity call that class
-    @OptIn(ExperimentalPermissionsApi::class)
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

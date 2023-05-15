@@ -52,7 +52,12 @@ class ProjectListViewModel : ViewModel() {
         _projects.value = _repository.getProjects()
     }
 
-    fun removeProjectDB(projectDao: ProjectDAO, noteDao: NoteDAO, project: Project, notes: List<Note>) {
+    fun removeProjectDB(
+        projectDao: ProjectDAO,
+        noteDao: NoteDAO,
+        project: Project,
+        notes: List<Note>
+    ) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 for (note in notes) {
@@ -80,7 +85,7 @@ class ProjectListViewModel : ViewModel() {
         showSampleRequest = state
     }
 
-    fun getSampleRequestState() : Boolean{
+    fun getSampleRequestState(): Boolean {
         return showSampleRequest
     }
 }

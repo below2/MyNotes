@@ -1,4 +1,5 @@
 package edu.towson.cosc435.group12.mynotes
+
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -8,5 +9,5 @@ data class Note(
     val projectId: String,
     var front: String,
     var back: String
-    ) {
+) {
 }

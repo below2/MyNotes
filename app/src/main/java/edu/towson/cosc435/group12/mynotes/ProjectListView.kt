@@ -5,9 +5,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -16,20 +13,18 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.rememberNavController
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalFoundationApi::class)
 @Composable
 fun ProjectListView(
     navController: NavController,
     projectvm: ProjectListViewModel,
     notevm: NoteListViewModel
 ) {
+    val projectDatabase = ProjectDatabase.getInstance(LocalContext.current)
+    val noteDatabase = NoteDatabase.getInstance(LocalContext.current)
     val projects = projectvm.projects
     var showSampleRequest by remember { mutableStateOf(projectvm.getSampleRequestState()) }
     var showHelperText by remember { mutableStateOf(true) }
@@ -119,6 +114,10 @@ fun ProjectListView(
                                         showSampleRequest = false
                                         showHelperText = false
                                         projectvm.setSampleRequestState(false)
+
+                                        val projectDao = projectDatabase.projectDao()
+                                        val noteDao = noteDatabase.noteDao()
+
                                         fetchSampleData() { sampleProjects, sampleNotes ->
                                             for (project in sampleProjects) {
                                                 val sampleProject =
@@ -127,6 +126,7 @@ fun ProjectListView(
                                                         project.projectName
                                                     )
                                                 projectvm.addProject(sampleProject)
+                                                projectvm.addProjectDB(projectDao, sampleProject)
                                             }
                                             for (note in sampleNotes) {
                                                 val sampleNote = Note(
@@ -136,6 +136,7 @@ fun ProjectListView(
                                                     note.back
                                                 )
                                                 notevm.addNote(sampleNote)
+                                                notevm.addNoteDB(noteDao, sampleNote)
                                             }
                                         }
                                     },
@@ -166,8 +167,6 @@ fun ProjectListView(
                 }
             }
         }
-
-
 
         AnimatedVisibility(
             visible = showHelperText,
