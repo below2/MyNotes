@@ -1,5 +1,9 @@
 package edu.towson.cosc435.group12.mynotes
 
+import android.content.Context
+import androidx.compose.ui.platform.LocalContext
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.util.*
 
 class ProjectRepository : IProjectRepository {

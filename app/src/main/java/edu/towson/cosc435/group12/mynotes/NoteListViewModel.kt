@@ -32,6 +32,11 @@ class NoteListViewModel : ViewModel() {
         _notes.value = _repository.getNotes()
     }
 
+    fun addSampleNote(projectId: String, sampleNote: SampleData) {
+        _repository.addSampleNote(projectId, sampleNote)
+        _notes.value = _repository.getNotes()
+    }
+
     fun removeNote(note: Note) {
         _repository.removeNote(note)
         _notes.value = _repository.getNotes()

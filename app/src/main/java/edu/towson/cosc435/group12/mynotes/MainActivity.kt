@@ -1,16 +1,9 @@
 package edu.towson.cosc435.group12.mynotes
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.scaleIn
@@ -24,17 +17,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.util.*
 
 //import edu.towson.cosc435.group12.mynotes.ui.theme.MyNotesTheme
 
@@ -45,6 +35,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val projectvm: ProjectListViewModel = viewModel()
+            val notevm: NoteListViewModel = viewModel()
+            popSampleData(projectvm, notevm)
+
             MyNotesTheme {
                 val navController = rememberNavController()
 
@@ -60,11 +54,34 @@ class MainActivity : ComponentActivity() {
                             AddButton(navController)
                         }
                     ) {
-                        MyNotesNavHost(navController)
+                        MyNotesNavHost(projectvm, notevm, navController)
                     }
                 }
             }
         }
+    }
+}
+
+@SuppressLint("CoroutineCreationDuringComposition")
+@Composable
+private fun popSampleData(projectvm: ProjectListViewModel, notevm: NoteListViewModel) {
+    val sampleNoteOne = SampleData(UUID.randomUUID().toString(), "First president", "George Washington")
+    val sampleNoteTwo = SampleData(UUID.randomUUID().toString(), "Second president", "Albert Einstein")
+    val sampleNoteThree = SampleData(UUID.randomUUID().toString(), "Third president", "Randy Valis")
+
+    projectvm.addProject("US Presidents")
+    val sampleProjectId = projectvm.getProjects()[0].projectId
+    notevm.addSampleNote(sampleProjectId, sampleNoteOne)
+    notevm.addSampleNote(sampleProjectId, sampleNoteTwo)
+    notevm.addSampleNote(sampleProjectId, sampleNoteThree)
+
+    val sampleDatabase = SampleDatabase.getInstance(LocalContext.current)
+    val sampleDataDao = sampleDatabase.sampleDataDao()
+
+    GlobalScope.launch {
+        sampleDataDao.insert(sampleNoteOne)
+        sampleDataDao.insert(sampleNoteTwo)
+        sampleDataDao.insert(sampleNoteThree)
     }
 }
 
