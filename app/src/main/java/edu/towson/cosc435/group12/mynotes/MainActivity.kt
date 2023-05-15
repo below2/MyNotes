@@ -1,6 +1,9 @@
 package edu.towson.cosc435.group12.mynotes
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -18,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -46,7 +50,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     Scaffold(
                         topBar = {
-                            TopBar(navController)
+                            TopBar(navController, application.applicationContext)
                         },
                         floatingActionButton = {
                             AddButton(navController)
@@ -81,11 +85,9 @@ private fun popDbData(projectvm: ProjectListViewModel, notevm: NoteListViewModel
         val projects = withContext(Dispatchers.IO) {
             projectDao.getAllProjects()
         }
-        System.out.println("hereee" + projects)
         val notes = withContext(Dispatchers.IO) {
             noteDao.getAllNotes()
         }
-        System.out.println("hereee" + notes)
 
 
         if (projects.isNotEmpty()) {
@@ -103,7 +105,7 @@ private fun popDbData(projectvm: ProjectListViewModel, notevm: NoteListViewModel
 }
 
 @Composable
-private fun TopBar(navController: NavHostController) {
+private fun TopBar(navController: NavHostController, ctx: Context) {
     val currentRoute = navController
         .currentBackStackEntryFlow
         .collectAsState(initial = navController.currentBackStackEntry)
@@ -115,6 +117,13 @@ private fun TopBar(navController: NavHostController) {
     val navBackTwice = when (currentRoute.value?.destination?.route) {
         Routes.NoteBack.route -> true
         else -> false
+    }
+    val showSearchButton = when (currentRoute.value?.destination?.route) {
+        Routes.EditProject.route -> false
+        Routes.EditNote.route -> false
+        Routes.AddProject.route -> false
+        Routes.AddNote.route -> false
+        else -> true
     }
 
     TopAppBar(
@@ -139,11 +148,25 @@ private fun TopBar(navController: NavHostController) {
                 }
                 Text("MyNotes")
                 Spacer(modifier = Modifier.weight(1f))
-                IconButton(onClick = {
-                    navController.navigate(Routes.Search.route)
-                }) {
-                    Icon(Icons.Default.Search, contentDescription = "Search")
+
+                if (showSearchButton) {
+                    IconButton(onClick = {
+                        navController.navigate(Routes.Search.route)
+                    }) {
+                        Icon(Icons.Default.Search, contentDescription = "Search")
+                    }
+                } else {
+                    IconButton(onClick = {
+                        val url = "https://puginarug.com/"
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
+                            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        }
+                        ctx.startActivity(intent)
+                    }) {
+                        Icon(Icons.Default.Info, contentDescription = "Info")
+                    }
                 }
+
             }
         },
         backgroundColor = MaterialTheme.colors.primary,
