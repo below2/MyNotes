@@ -25,6 +25,7 @@ import androidx.navigation.NavHostController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import java.util.*
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class,
     ExperimentalPermissionsApi::class
@@ -34,6 +35,7 @@ fun AddProjectView(
     navController: NavHostController,
     projectvm: ProjectListViewModel
 ) {
+    val projectDatabase = ProjectDatabase.getInstance(LocalContext.current)
     val focusManager = LocalFocusManager.current
     var sendNotification by remember { mutableStateOf(false) }
     var projectName by remember { mutableStateOf("") }
@@ -65,7 +67,13 @@ fun AddProjectView(
 
             Button(
                 onClick = {
-                    projectvm.addProject(projectName)
+                    val projectDao = projectDatabase.projectDao()
+                    val newProjectId = UUID.randomUUID().toString()
+                    val newProject = Project(newProjectId, projectName)
+
+                    projectvm.addProject(newProject)
+                    projectvm.addProjectDB(projectDao, newProject)
+
                     sendNotification = true
                     navController.navigateUp()
                 },

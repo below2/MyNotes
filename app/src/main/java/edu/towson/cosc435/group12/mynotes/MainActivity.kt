@@ -22,8 +22,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.util.*
 
 //import edu.towson.cosc435.group12.mynotes.ui.theme.MyNotesTheme
@@ -37,8 +36,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val projectvm: ProjectListViewModel = viewModel()
             val notevm: NoteListViewModel = viewModel()
-            popSampleData(projectvm, notevm)
-
+            popDbData(projectvm, notevm)
             MyNotesTheme {
                 val navController = rememberNavController()
 
@@ -62,26 +60,45 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@SuppressLint("CoroutineCreationDuringComposition")
 @Composable
-private fun popSampleData(projectvm: ProjectListViewModel, notevm: NoteListViewModel) {
-    val sampleNoteOne = SampleData(UUID.randomUUID().toString(), "First president", "George Washington")
-    val sampleNoteTwo = SampleData(UUID.randomUUID().toString(), "Second president", "Albert Einstein")
-    val sampleNoteThree = SampleData(UUID.randomUUID().toString(), "Third president", "Randy Valis")
+private fun popDbData(projectvm: ProjectListViewModel, notevm: NoteListViewModel) {
+    val projectDatabase = ProjectDatabase.getInstance(LocalContext.current)
+    val noteDatabase = NoteDatabase.getInstance(LocalContext.current)
+    val projectDao = projectDatabase.projectDao()
+    val noteDao = noteDatabase.noteDao()
 
-    projectvm.addProject("US Presidents")
-    val sampleProjectId = projectvm.getProjects()[0].projectId
-    notevm.addSampleNote(sampleProjectId, sampleNoteOne)
-    notevm.addSampleNote(sampleProjectId, sampleNoteTwo)
-    notevm.addSampleNote(sampleProjectId, sampleNoteThree)
+    LaunchedEffect(Unit) {
+//        val deleteDeferred = CompletableDeferred<Unit>()
+//
+//        withContext(Dispatchers.IO) {
+//            projectDao.deleteAllProjects()
+//            noteDao.deleteAllNotes()
+//            deleteDeferred.complete(Unit)
+//        }
+//
+//        deleteDeferred.await()
 
-    val sampleDatabase = SampleDatabase.getInstance(LocalContext.current)
-    val sampleDataDao = sampleDatabase.sampleDataDao()
+        val projects = withContext(Dispatchers.IO) {
+            projectDao.getAllProjects()
+        }
+        System.out.println("hereee" + projects)
+        val notes = withContext(Dispatchers.IO) {
+            noteDao.getAllNotes()
+        }
+        System.out.println("hereee" + notes)
 
-    GlobalScope.launch {
-        sampleDataDao.insert(sampleNoteOne)
-        sampleDataDao.insert(sampleNoteTwo)
-        sampleDataDao.insert(sampleNoteThree)
+
+        if (projects.isNotEmpty()) {
+            for (project in projects) {
+                projectvm.addProject(project)
+            }
+        }
+
+        if (notes.isNotEmpty()) {
+            for (note in notes) {
+                notevm.addNote(note)
+            }
+        }
     }
 }
 

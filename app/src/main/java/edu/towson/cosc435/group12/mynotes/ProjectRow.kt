@@ -16,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,6 +33,8 @@ fun ProjectRow(
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {}
 ) {
+    val projectDatabase = ProjectDatabase.getInstance(LocalContext.current)
+    val noteDatabase = NoteDatabase.getInstance(LocalContext.current)
     var expandedMenu by remember { mutableStateOf(false) }
     var showDialog by remember { mutableStateOf(false) }
 
@@ -112,7 +115,10 @@ fun ProjectRow(
                                 Button(
                                     onClick = {
                                         showDialog = false
+                                        val projectDao = projectDatabase.projectDao()
+                                        val noteDao = noteDatabase.noteDao()
                                         projectvm.removeProject(project, notevm)
+                                        projectvm.removeProjectDB(projectDao, noteDao, project, notevm)
                                     },
                                     colors = ButtonDefaults.buttonColors(
                                         backgroundColor = MaterialTheme.colors.primaryVariant

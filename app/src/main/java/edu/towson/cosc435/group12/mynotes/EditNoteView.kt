@@ -10,9 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
@@ -26,6 +24,7 @@ fun EditNoteView(
     notevm: NoteListViewModel,
     noteId: String
 ) {
+    val noteDatabase = NoteDatabase.getInstance(LocalContext.current)
     val focusManager = LocalFocusManager.current
     Box(modifier = Modifier
         .fillMaxSize()
@@ -66,6 +65,8 @@ fun EditNoteView(
             Button(
                 onClick = {
                     notevm.editNote(noteId, frontText, backText)
+                    val noteDao = noteDatabase.noteDao()
+                    notevm.editNoteDB(noteId, notevm.getNote(noteId).projectId, noteDao, frontText, backText)
                     navController.navigateUp()
                 },
                 colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),

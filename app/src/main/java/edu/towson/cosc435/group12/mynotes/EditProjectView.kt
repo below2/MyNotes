@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -27,6 +28,7 @@ fun EditProjectView(
     projectvm: ProjectListViewModel,
     notevm: NoteListViewModel
 ) {
+    val noteDatabase = NoteDatabase.getInstance(LocalContext.current)
     val noteListState = notevm.notes
     val project = projectvm.getProject(projectId)
 
@@ -67,6 +69,8 @@ fun EditProjectView(
                             confirmStateChange = {
                                 if (it == DismissValue.DismissedToStart) {
                                     notevm.removeNote(currentNote)
+                                    val noteDao = noteDatabase.noteDao()
+                                    notevm.removeNoteDB(noteDao, currentNote)
                                     true
                                 } else false
                             }
@@ -74,6 +78,8 @@ fun EditProjectView(
 
                         if (dismissState.isDismissed(DismissDirection.EndToStart)) {
                             notevm.removeNote(note)
+                            val noteDao = noteDatabase.noteDao()
+                            notevm.removeNoteDB(noteDao, note)
                         }
 
                         SwipeToDismiss(

@@ -13,12 +13,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.util.*
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
@@ -27,16 +33,19 @@ fun AddNoteView(
     notevm: NoteListViewModel,
     projectvm: ProjectListViewModel
 ) {
+    val noteDatabase = NoteDatabase.getInstance(LocalContext.current)
     val projects = projectvm.getProjects()
     var expanded by remember { mutableStateOf(false) }
 
     if (projects.isNotEmpty()) {
         var selectedProject by remember { mutableStateOf(projects.first()) }
         val focusManager = LocalFocusManager.current
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .clickable(onClick = { focusManager.clearFocus() }),
-            contentAlignment = Alignment.Center) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .clickable(onClick = { focusManager.clearFocus() }),
+            contentAlignment = Alignment.Center
+        ) {
             Column(
                 modifier = Modifier
                     .padding(16.dp),
@@ -101,7 +110,18 @@ fun AddNoteView(
 
                 Button(
                     onClick = {
-                        notevm.addNote(selectedProject.projectId, frontText, backText)
+                        val noteDao = noteDatabase.noteDao()
+                        val newNoteId = UUID.randomUUID().toString()
+                        val newNote = Note(
+                            newNoteId,
+                            selectedProject.projectId,
+                            frontText,
+                            backText
+                        )
+
+                        notevm.addNote(newNote)
+                        notevm.addNoteDB(noteDao, newNote)
+
                         navController.navigateUp()
                     },
                     colors = ButtonDefaults.buttonColors(backgroundColor = MaterialTheme.colors.primary),

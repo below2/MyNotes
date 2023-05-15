@@ -31,15 +31,8 @@ class NoteRepository : INoteRepository {
         return projectNotes
     }
 
-    override fun addNote(projectId : String, front : String, back : String) {
-        _notes += Note(UUID.randomUUID().toString(), projectId, front, back)
-    }
-
-    override fun addSampleNote(projectId : String, sampleNote : SampleData) {
-        val sampleFront: String = sampleNote.sampleFront
-        val sampleBack: String = sampleNote.sampleBack
-
-        _notes += Note(UUID.randomUUID().toString(), projectId, sampleFront, sampleBack)
+    override fun addNote(note: Note) {
+        _notes += note
     }
 
     override fun removeNote(note: Note) {

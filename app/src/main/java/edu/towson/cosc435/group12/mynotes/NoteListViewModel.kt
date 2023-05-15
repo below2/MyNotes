@@ -4,6 +4,10 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class NoteListViewModel : ViewModel() {
     private val _notes: MutableState<List<Note>> = mutableStateOf(listOf())
@@ -27,14 +31,17 @@ class NoteListViewModel : ViewModel() {
         return _repository.getProjectNotes(projectId)
     }
 
-    fun addNote(projectId: String, front: String, back: String) {
-        _repository.addNote(projectId, front, back)
+    fun addNote(note: Note) {
+        _repository.addNote(note)
         _notes.value = _repository.getNotes()
     }
 
-    fun addSampleNote(projectId: String, sampleNote: SampleData) {
-        _repository.addSampleNote(projectId, sampleNote)
-        _notes.value = _repository.getNotes()
+    fun addNoteDB(noteDao: NoteDAO, note: Note) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                noteDao.insertNote(note)
+            }
+        }
     }
 
     fun removeNote(note: Note) {
@@ -42,8 +49,30 @@ class NoteListViewModel : ViewModel() {
         _notes.value = _repository.getNotes()
     }
 
+    fun removeNoteDB(noteDao: NoteDAO, note: Note) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                noteDao.deleteNote(note)
+            }
+        }
+    }
+
     fun editNote(noteId: String, front: String, back: String) {
         _repository.editNote(noteId, front, back)
         _notes.value = _repository.getNotes()
+    }
+
+    fun editNoteDB(
+        noteId: String,
+        projectId: String,
+        noteDao: NoteDAO,
+        front: String,
+        back: String
+    ) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                noteDao.updateNote(Note(noteId, projectId, front, back))
+            }
+        }
     }
 }

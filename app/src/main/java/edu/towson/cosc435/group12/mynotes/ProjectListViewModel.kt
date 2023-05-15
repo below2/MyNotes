@@ -4,6 +4,10 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ProjectListViewModel : ViewModel() {
     private val _projects: MutableState<List<Project>> = mutableStateOf(listOf())
@@ -23,9 +27,17 @@ class ProjectListViewModel : ViewModel() {
         return _repository.getProject(projectId)
     }
 
-    fun addProject(projectName: String) {
-        _repository.addProject(projectName)
+    fun addProject(project: Project) {
+        _repository.addProject(project)
         _projects.value = _repository.getProjects()
+    }
+
+    fun addProjectDB(projectDao: ProjectDAO, project: Project) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                projectDao.insertProject(project)
+            }
+        }
     }
 
     fun removeProject(project: Project, notevm: NoteListViewModel) {
@@ -38,8 +50,29 @@ class ProjectListViewModel : ViewModel() {
         _projects.value = _repository.getProjects()
     }
 
+    fun removeProjectDB(projectDao: ProjectDAO, noteDao: NoteDAO, project: Project, notevm: NoteListViewModel) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                for (note in notevm.getNotes()) {
+                    if (note.projectId == project.projectId) {
+                        noteDao.deleteNote(note)
+                    }
+                }
+                projectDao.deleteProject(project)
+            }
+        }
+    }
+
     fun editProject(projectId: String, projectName: String) {
         _repository.editProject(projectId, projectName)
         _projects.value = _repository.getProjects()
+    }
+
+    fun editProjectDB(projectDao: ProjectDAO, projectId: String, projectName: String) {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                projectDao.updateProject(Project(projectId, projectName))
+            }
+        }
     }
 }
