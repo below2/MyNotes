@@ -186,6 +186,7 @@ private fun AddButton(navController: NavHostController) {
         Routes.AddProject.route -> false
         Routes.EditNote.route -> false
         Routes.EditProjectName.route -> false
+        Routes.Search.route -> false
         else -> true
     }
     var showOptions by remember { mutableStateOf(false) }
