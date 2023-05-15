@@ -117,8 +117,10 @@ fun ProjectRow(
                                         showDialog = false
                                         val projectDao = projectDatabase.projectDao()
                                         val noteDao = noteDatabase.noteDao()
+                                        val notesToDelete = notevm.getProjectNotes(project.projectId)
+
                                         projectvm.removeProject(project, notevm)
-                                        projectvm.removeProjectDB(projectDao, noteDao, project, notevm)
+                                        projectvm.removeProjectDB(projectDao, noteDao, project, notesToDelete)
                                     },
                                     colors = ButtonDefaults.buttonColors(
                                         backgroundColor = MaterialTheme.colors.primaryVariant

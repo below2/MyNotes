@@ -15,6 +15,8 @@ class ProjectListViewModel : ViewModel() {
 
     private val _repository: IProjectRepository = ProjectRepository()
 
+    private var showSampleRequest = true
+
     init {
         _projects.value = _repository.getProjects()
     }
@@ -50,13 +52,11 @@ class ProjectListViewModel : ViewModel() {
         _projects.value = _repository.getProjects()
     }
 
-    fun removeProjectDB(projectDao: ProjectDAO, noteDao: NoteDAO, project: Project, notevm: NoteListViewModel) {
+    fun removeProjectDB(projectDao: ProjectDAO, noteDao: NoteDAO, project: Project, notes: List<Note>) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                for (note in notevm.getNotes()) {
-                    if (note.projectId == project.projectId) {
-                        noteDao.deleteNote(note)
-                    }
+                for (note in notes) {
+                    noteDao.deleteNote(note)
                 }
                 projectDao.deleteProject(project)
             }
@@ -74,5 +74,13 @@ class ProjectListViewModel : ViewModel() {
                 projectDao.updateProject(Project(projectId, projectName))
             }
         }
+    }
+
+    fun setSampleRequestState(state: Boolean) {
+        showSampleRequest = state
+    }
+
+    fun getSampleRequestState() : Boolean{
+        return showSampleRequest
     }
 }

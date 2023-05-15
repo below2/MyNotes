@@ -72,15 +72,6 @@ private fun popDbData(projectvm: ProjectListViewModel, notevm: NoteListViewModel
     val noteDao = noteDatabase.noteDao()
 
     LaunchedEffect(Unit) {
-//        val deleteDeferred = CompletableDeferred<Unit>()
-//
-//        withContext(Dispatchers.IO) {
-//            projectDao.deleteAllProjects()
-//            noteDao.deleteAllNotes()
-//            deleteDeferred.complete(Unit)
-//        }
-//
-//        deleteDeferred.await()
 
         val projects = withContext(Dispatchers.IO) {
             projectDao.getAllProjects()
@@ -119,7 +110,7 @@ private fun TopBar(navController: NavHostController, ctx: Context) {
         else -> false
     }
     val showSearchButton = when (currentRoute.value?.destination?.route) {
-        Routes.EditProject.route -> false
+        Routes.EditProjectName.route -> false
         Routes.EditNote.route -> false
         Routes.AddProject.route -> false
         Routes.AddNote.route -> false
